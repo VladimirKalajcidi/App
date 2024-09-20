@@ -1,39 +1,88 @@
-body {
-    font-family: Arial, sans-serif;
+* {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    background-color: #f0f8ff; /* Light background color */
-    color: #333; /* Dark text color */
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background-color: #f2f2f2; /* Light gray background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
 }
 
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh; /* Full viewport height */
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    padding: 20px;
     text-align: center;
 }
 
-h1 {
-    margin: 20px 0; /* Space around the heading */
+h2 {
+    margin-bottom: 15px;
+    color: #333; /* Darker header color */
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.signin, .signup {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 10px 0;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
 button {
-    padding: 10px 20px;
-    margin: 10px;
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50; /* Green button */
+    color: white;
     border: none;
-    background-color: #4CAF50; /* Green background */
-    color: white; /* White text */
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s; /* Smooth transition */
+    font-size: 16px;
 }
 
 button:hover {
     background-color: #45a049; /* Darker green on hover */
 }
 
-button:focus {
-    outline: none; /* Remove outline */
+.flash-messages {
+    margin-top: 10px;
 }
+
+.flash-messages ul {
+    list-style-type: none;
+}
+
+.flash-messages li.error {
+    color: red; /* Red for errors */
+}
+
+.flash-messages li.success {
+    color: green; /* Green for success messages */
+}
+
+@media screen and (max-width: 500px) {
+    .container {
+        width: 90%; /* Full width on small screens */
+    }
+}
+

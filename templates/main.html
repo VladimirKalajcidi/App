@@ -3,11 +3,13 @@
 {% block content %}
 <div class="container">
     <h1>Welcome to the Math Topics App!</h1>
-    <a href="{{ url_for('random_term', topic='linear algebra') }}">
-        <button>Learn Linear Algebra</button>
-    </a>
-    <a href="{{ url_for('random_term', topic='calculus') }}">
-        <button>Learn Calculus</button>
-    </a>
+    <div class="button-container">
+        <a href="{{ url_for('random_term', topic='linear algebra') }}">
+            <button class="topic-button">Learn Linear Algebra</button>
+        </a>
+        <a href="{{ url_for('random_term', topic='calculus') }}">
+            <button class="topic-button">Learn Calculus</button>
+        </a>
+    </div>
 </div>
 {% endblock %}

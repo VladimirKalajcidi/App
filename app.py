@@ -1,5 +1,5 @@
 import random
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash, send_file
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import db, User, Term
@@ -18,36 +18,49 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
-@app.route('/signup', methods=['GET', 'POST'])
-def signup():
+
+@app.route('/manifest.json')
+def serve_manifest():
+    return send_file('manifest.json', mimetype='application/manifest+json')
+
+
+@app.route('/sw.js')
+def serve_sw():
+    return send_file('sw.js', mimetype='application/javascript')
+
+
+@app.route('/auth', methods=['GET', 'POST'])
+def auth():
     if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
-        hashed_password = generate_password_hash(password)
+        # Handle signup
+        if request.form.get('action') == 'signup':
+            email = request.form['email']
+            password = request.form['password']
+            hashed_password = generate_password_hash(password)
 
-        existing_user = User.query.filter_by(email=email).first()
-        if existing_user:
-            return "Error: Email already exists.", 400
+            existing_user = User.query.filter_by(email=email).first()
+            if existing_user:
+                flash("Error: Email already exists.", "error")
+                return redirect(url_for('auth'))
 
-        new_user = User(email=email, password=hashed_password)
-        db.session.add(new_user)
-        db.session.commit()
+            new_user = User(email=email, password=hashed_password)
+            db.session.add(new_user)
+            db.session.commit()
+            flash("Account created successfully! You can log in now.", "success")
+            return redirect(url_for('auth'))
 
-        return redirect(url_for('login'))
-    return render_template('signup.html')
+        # Handle login
+        if request.form.get('action') == 'login':
+            email = request.form['email']
+            password = request.form['password']
+            user = User.query.filter_by(email=email).first()
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
-        user = User.query.filter_by(email=email).first()
+            if user and check_password_hash(user.password, password):
+                session['user_id'] = user.id
+                return redirect(url_for('main'))
+            flash('Invalid credentials', 'error')
 
-        if user and check_password_hash(user.password, password):
-            session['user_id'] = user.id
-            return redirect(url_for('main'))
-        return 'Invalid credentials', 401
-    return render_template('login.html')
+    return render_template('auth.html')
 
 @app.route('/main')
 def main():

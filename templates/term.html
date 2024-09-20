@@ -27,5 +27,9 @@
     <form method="GET" action="{{ url_for('random_term', topic=term.maths_topic) }}">
         <button type="submit">Get Another Random Term</button>
     </form>
+
+    <form method="GET" action="{{ url_for('main') }}">
+        <button type="submit">Go Back</button>
+    </form>
 </body>
 </html>
