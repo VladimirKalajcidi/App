@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>{{ term.term }}</h1>
+
+    <button id="showDefinitionButton">Show Definition</button>
+    <p id="definition" style="display: none;">{{ term.definition }}</p>
+
+
+    <div>
+        {% if dependency_term %}
+            <button id="showDependencyWordButton">Show Dependency Word</button>
+            <div id="dependencyInfo" style="display: none;">
+                <p>Term it is dependent on: <strong>{{ dependency_term.term }}</strong></p>
+                <p>Its definition: <strong>{{ dependency_term.definition }}</strong></p>
+            </div>
+        {% else %}
+            <p>No dependency term available.</p>
+        {% endif %}
+    </div>
+    
+
+    <form action="{{ url_for('new_term', topic=term.maths_topic) }}" method="post">
+        <button type="submit">Show Another Random Term</button>
+    </form>
+
+    <a href="{{ url_for('main') }}">
+        <button>Back to Topics</button>
+    </a>
+</div>
+
+<script>
+    document.getElementById("showDefinitionButton").onclick = function() {
+        const definitionElement = document.getElementById("definition");
+        if (definitionElement.style.display === "none") {
+            definitionElement.style.display = "block";
+            this.innerText = "Hide Definition";
+        } else {
+            definitionElement.style.display = "none";
+            this.innerText = "Show Definition";
+        }
+    };
+
+    document.getElementById("showDependencyWordButton").onclick = function() {
+        const dependencyWordElement = document.getElementById("dependencyWord");
+        const dependencyDefinitionElement = document.getElementById("dependencyDefinition");
+
+        if (dependencyWordElement.style.display === "none") {
+            dependencyWordElement.style.display = "block";
+            dependencyDefinitionElement.style.display = "block"; // Also show the definition
+            this.innerText = "Hide Dependency Word";
+        } else {
+            dependencyWordElement.style.display = "none";
+            dependencyDefinitionElement.style.display = "none"; // Also hide the definition
+            this.innerText = "Show Dependency Word";
+        }
+    };
+</script>
+
+{% endblock %}

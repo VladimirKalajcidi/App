@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Term Details</title>
+</head>
+<body>
+    {% if term %}
+        <h1>{{ term.term }}</h1>
+        <p>{{ term.definition }}</p>
+    {% endif %}
+
+    {% if dependency_term %}
+        <h2>«Dependency Term»: {{ dependency_term.term }}</h2>
+        <p>«Dependency Term Definition»: {{ dependency_term.definition }}</p>
+    {% endif %}
+
+    <!-- Form to show dependency term -->
+    {% if term %}
+        <form method="GET" action="{{ url_for('show_dependency', term_id=term.id) }}">
+            <button type="submit">Show Dependency Word</button>
+        </form>
+    {% endif %}
+
+    <!-- Button to get a random term -->
+    <form method="GET" action="{{ url_for('random_term', topic=term.maths_topic) }}">
+        <button type="submit">Get Another Random Term</button>
+    </form>
+</body>
+</html>
